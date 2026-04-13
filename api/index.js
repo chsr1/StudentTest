@@ -306,11 +306,105 @@
 
 
 
+// const express = require("express");
+// const { MongoClient, ObjectId } = require("mongodb");
+// const cors = require("cors");
+
+// const app = express();
+// app.use(cors());
+// app.use(express.json());
+
+// const uri = process.env.MONGO_URI;
+
+// let client;
+// let db;
+
+// async function getDB() {
+//     try {
+//         if (!db) {
+//             client = new MongoClient(uri);
+//             await client.connect();
+//             db = client.db("SchoolDB");
+//             console.log("MongoDB connected");
+//         }
+//         return db;
+//     } catch (error) {
+//         console.error("DB Connection Error:", error);
+//         throw error;
+//     }
+// }
+
+// // CREATE
+// app.post("/api/students", async (req, res) => {
+//     try {
+//         const database = await getDB();
+//         const result = await database
+//             .collection("students")
+//             .insertOne(req.body);
+
+//         res.json(result);
+//     } catch (error) {
+//         res.status(500).json({ error: error.message });
+//     }
+// });
+
+// // READ
+// app.get("/api/students", async (req, res) => {
+//     try {
+//         const database = await getDB();
+//         const students = await database
+//             .collection("students")
+//             .find()
+//             .toArray();
+
+//         res.json(students);
+//     } catch (error) {
+//         res.status(500).json({ error: error.message });
+//     }
+// });
+
+// // UPDATE
+// app.put("/api/students/:id", async (req, res) => {
+//     try {
+//         const database = await getDB();
+
+//         await database.collection("students").updateOne(
+//             { _id: new ObjectId(req.params.id) },
+//             { $set: req.body }
+//         );
+
+//         res.json({ message: "Updated successfully" });
+//     } catch (error) {
+//         res.status(500).json({ error: error.message });
+//     }
+// });
+
+// // DELETE
+// app.delete("/api/students/:id", async (req, res) => {
+//     try {
+//         const database = await getDB();
+
+//         await database.collection("students").deleteOne({
+//             _id: new ObjectId(req.params.id)
+//         });
+
+//         res.json({ message: "Deleted successfully" });
+//     } catch (error) {
+//         res.status(500).json({ error: error.message });
+//     }
+// });
+
+// module.exports = app;
+
+
+
+
 const express = require("express");
 const { MongoClient, ObjectId } = require("mongodb");
 const cors = require("cors");
 
 const app = express();
+
 app.use(cors());
 app.use(express.json());
 
@@ -334,14 +428,16 @@ async function getDB() {
     }
 }
 
+// test route
+app.get("/", (req, res) => {
+    res.json({ message: "API is working" });
+});
+
 // CREATE
 app.post("/api/students", async (req, res) => {
     try {
         const database = await getDB();
-        const result = await database
-            .collection("students")
-            .insertOne(req.body);
-
+        const result = await database.collection("students").insertOne(req.body);
         res.json(result);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -352,11 +448,7 @@ app.post("/api/students", async (req, res) => {
 app.get("/api/students", async (req, res) => {
     try {
         const database = await getDB();
-        const students = await database
-            .collection("students")
-            .find()
-            .toArray();
-
+        const students = await database.collection("students").find().toArray();
         res.json(students);
     } catch (error) {
         res.status(500).json({ error: error.message });
