@@ -229,7 +229,7 @@ const uri = process.env.MONGODB_URI;
 
 let client;
 let db;
-
+client = new MongoClient(uri);
 async function getDB() {
     try {
         if (!db) {
