@@ -244,7 +244,9 @@ async function getDB() {
         throw error;
     }
 }
-
+app.get("/", (req, res) => {
+    res.redirect("/students");
+});
 app.get("/students", async (req, res) => {
     try {
         const database = await getDB();
